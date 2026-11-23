@@ -1,0 +1,19 @@
+file_names = ['text1.txt', 'text2.txt', 'text3.txt']
+files_data = []
+for name in file_names:
+    with open(name, encoding='utf-8') as f:
+        lines = f.readlines()
+    files_data.append((len(lines), name, lines))
+files_data.sort()
+
+with open('result.txt', 'w', encoding='utf-8') as f:
+    for count, name, lines in files_data:
+        f.write(f'{name}\n')         # Первая служебная строка: имя файла
+        f.write(f'{count}\n')        # Вторая служебная строка: число строк
+        f.writelines(lines)          # Все строки самого файла
+        f.write('\n')                # Перенос строки перед следующим файлом
+
+with open('result.txt', encoding='utf-8') as f:
+    lines = f.read()
+
+print(lines)

@@ -1,0 +1,41 @@
+with open('recipes.txt', encoding='utf-8') as f:
+    lines = f.read().splitlines()     # строки файла перегоняются в список. Каждая строчка это значение списка
+
+# разделение большого списка со всеми данными на гомогенные списки 
+dish = []
+ingredients = []
+quantity_ingrid = []
+for item in lines:
+    if "|" in item:                    # создание списка ингридиентов
+        ingredients.append(item)
+    elif len(item) == 1 :              # создание списка количества ингредиентов в блюде
+        quantity_ingrid.append(item)
+    elif len(item) == 0 :              # создание списка блюд
+        pass
+    else:
+        dish.append(item)
+
+# создание списков словарей ингредиентов
+keys = ['ingredient_name', 'quantity', 'measure']
+list_ingredients = []
+for raw_ingredient in ingredients:
+    parts = raw_ingredient.split(' | ')
+    parts [1] = int(parts[1])
+    result = dict(zip(keys, parts))
+    list_ingredients.append(result)
+
+# создание списков словарей ингредиентов  для каждого блюда
+list_list_ingredients = []
+start = 0
+end = 0
+for num_of_ingredient in quantity_ingrid:
+    temp_list = []
+    num_of_ingredient = int(num_of_ingredient)
+    end = end + num_of_ingredient
+    temp_list = list_ingredients[start:end]
+    start = start + num_of_ingredient
+    list_list_ingredients.append(temp_list)
+
+keys = dish
+cook_book = dict(zip(keys,list_list_ingredients))
+print(cook_book)
